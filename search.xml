@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  <entry>
+    <title>hexo搭建博客流程，及遇到的问题</title>
+    <url>/2024/01/17/hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%B5%81%E7%A8%8B%EF%BC%8C%E5%8F%8A%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h4 id="1-一些碎碎念"><a href="#1-一些碎碎念" class="headerlink" title="1 一些碎碎念"></a>1 一些碎碎念</h4><ul>
+<li>突然觉得自己应该有一个博客，所以我在搭博客了</li>
+<li>搭起来真的很酷</li>
+<li>我和朋友说酷是一辈子的事</li>
+<li>暂时是把GitHub当做服务器来部署博客</li>
+<li>先做这个试试手，后续我会去购买域名和服务器，让我能真正拥有一个属于自己的网站 : )</li>
+<li>耗时一个小时，部署好了，但是我真的气笑了</li>
+</ul>
+<h4 id="2-搭建流程"><a href="#2-搭建流程" class="headerlink" title="2 搭建流程"></a>2 搭建流程</h4><ol>
+<li><p>准备环境</p>
+<p>确保自己的电脑上已经安装好 Git 和 Node.js</p>
+</li>
+<li><p>安装 hexo</p>
+<ul>
+<li><p>在自己想要放置博客文件的磁盘里新建一个文件夹</p>
+</li>
+<li><p>进入文件夹，点击鼠标右键，选择 Git Bash Here，而后依次输入以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-cli -g</span><br><span class="line">hexo init blog</span><br><span class="line">cd blog</span><br><span class="line">npm install</span><br><span class="line">hexo server // 缩写 hexo s #运行hexo网页</span><br><span class="line"></span><br><span class="line">// 单行输入后回车，若不出现NPM ERRO等报错信息即当前命令执行完毕</span><br><span class="line">// 命令来自hexo官方网站 hexo.io</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>以上命令执行完毕即可根据控制台给出的地址访问到博客啦（目前地址只能在本地访问博客）</p>
+</li>
+</ul>
+</li>
+<li><p>将博客部署到 GitHub 上</p>
+<ul>
+<li><p>首先要拥有一个 GitHub 账户，在 blog 文件夹中点击鼠标右键，选择 Git Bash Here，依次输入以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git config --global user.name &quot;GitHub用户名&quot;</span><br><span class="line">git config --global user.email &quot;GitHub邮箱&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建SSH秘钥</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh-keygen -t rsa -C &quot;GitHub邮箱&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取秘钥</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cat ~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加秘钥</p>
+<p>登录 GitHub ，点击右上角头像，选择 settings，选择左侧 SSH and GPG keys，点击 New SSH key，将获取到的秘钥复制进 Key 中，Add SSH key完成添加</p>
+</li>
+<li><p>验证连接</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ssh -T git@github.com</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建 GitHub pages 仓库</p>
+<p>点击 GitHub 右上角加号，选择 New repository 新建仓库，Repository name 输入 用户名.github.io，选择 Public 公开仓库（以便能通过外链访问）</p>
+</li>
+<li><p>安装 hexo-deployer-git</p>
+<p>在 blog 文件夹中点击鼠标右键，选择 Git Bash Here，输入以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>修改 blog 文件夹中 _config.yml 文件末尾部分</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: https://github.com/用户名.github.io.git</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将本地网页部署到 GitHub pages</p>
+<p>在 blog 文件夹中点击鼠标右键，选择 Git Bash Here，输入以下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo deploy</span><br><span class="line">// 缩写 hexo d</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>访问博客</p>
+<p>浏览器地址栏输入如下地址即可访问</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">https://用户名.github.io/</span><br></pre></td></tr></table></figure></li>
+</ol>
+<hr>
+<blockquote>
+<p>先写这么多，剩下的有时间再写</p>
+</blockquote>
+<hr>
+<p>—————————— 1.18更新 ——————————</p>
+<h4 id="3-遇到的问题"><a href="#3-遇到的问题" class="headerlink" title="3 遇到的问题"></a>3 遇到的问题</h4><ol>
+<li><p>创建 GitHub pages 仓库</p>
+<ul>
+<li><p>创建仓库时，若选择添加 README 文件，将本地网页部署到 GitHub 后，出现了两个分支（main 和 master ），这导致了访问博客地址后看到的内容是 main 分支中 README 文件的内容</p>
+<p>√ 解决方案：创建仓库时不选择添加 README 文件</p>
+<p>-&gt; 部署时设置过 _config.yml 文件中的 branch: master，但仍无法正确显示博客内容</p>
+</li>
+<li><p>仓库名字的设置，尝试过将仓库名取为与 Github 用户名一致，其他任意名字，出现的问题是无法安装 hexo-deployer-git</p>
+<p>√ 解决方案：将仓库名字修改为，用户名.github.io</p>
+<p>-&gt; 安装 hexo-deployer-git 之前配置了_config.yml 文件，配置文件尚且与安装无关联，或许是网络问题导致安装失败</p>
+<p>？ 待验证：网络良好的情况下仓库名字设置为其他名字是否能安装成功</p>
+</li>
+</ul>
+</li>
+<li><p>安装 hexo-deployer-git</p>
+<ul>
+<li><p>第一次安装时，先配置了_config.yml 文件，安装失败，我以为是配置文件的问题，后来翻阅资料发现并不是，尝试过网上的很多办法都无济于事</p>
+<p>√ 解决方案：确保挂了梯子，重开 Git Bash Here 输入命令，多尝试几遍</p>
+<p>-&gt; 也许找到原因了，安装时关闭电脑的代理服务器（打开电脑 ‘设置’，点击 ‘网络和Internet’，手动设置代理中关闭 ‘使用代理服务器’），同时挂好梯子就能安装成功了</p>
+</li>
+</ul>
+</li>
+<li><p>网页部署</p>
+<ul>
+<li><p>输入 hexo d 之后部署失败，尝试过输入以下命令解决，尚未成功</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">hexo clean // 缩写hexo c #清楚缓存</span><br><span class="line">hexo generate // 缩写hexo g #生成静态网页</span><br><span class="line">hexo deploy // 缩写hexo d #部署网页</span><br><span class="line"></span><br><span class="line">// hexo三件套</span><br></pre></td></tr></table></figure>
+
+<p>√ 解决方案：修改 _config.yml 文件中的 repository 地址，地址使用 HTTPS ，若使用 SSH 地址则无法部署成功</p>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<blockquote>
+<p>以上大概是这篇博客的所有内容，若有出错的地方，欢迎指正 : )</p>
+</blockquote>
+<hr>
+<p> —————————- 1.19 更新 —————————-</p>
+<h4 id="4-相关问题补充"><a href="#4-相关问题补充" class="headerlink" title="4 相关问题补充"></a>4 相关问题补充</h4><ol>
+<li>关于上述 3 中第一点 待验证部分（？ 待验证：网络良好的情况下仓库名字设置为其他名字是否能安装成功）<ul>
+<li>结论：设置仓库为其他名字可以成功安装，且能成功部署（经查证，安装 hexo-deployer-git 成败与仓库地址无关，重要的是网络问题）</li>
+</ul>
+</li>
+<li>关于仓库命名问题<ul>
+<li>由于个人操作失误，重新搭建了博客，具体请看另一篇心得博客</li>
+<li>在以 ‘用户名.github.io’ 命名仓库未删除的情况下新建了仓库用于部署新博客，新仓库名字为 ‘xxx.github.io’</li>
+<li>部署成功后访问 <a href="https://xxx.github.io/">https://xxx.github.io</a> 显示404，正确的访问地址是 https:&#x2F;&#x2F;用户名.github.io&#x2F;xxx.github.io；也就意味着仓库命名为用户名以外的名字，访问地址时需要在url 中添加 ‘用户名.github.io’</li>
+<li>以上我不清楚具体原因，或许是默认机制或许是其他还有待查证</li>
+</ul>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>搭建博客心得</title>
+    <url>/2024/01/19/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%BF%83%E5%BE%97(bushi)/</url>
+    <content><![CDATA[<h4 id="1-关于博客搭建"><a href="#1-关于博客搭建" class="headerlink" title="1 关于博客搭建"></a>1 关于博客搭建</h4><ul>
+<li><p>第一次搭建博客的耗时很短，搭好之后感觉挺有成就感的</p>
+</li>
+<li><p>但我也没想到我自己写的第一篇博客面向的第一个对象会是我自己</p>
+<ul>
+<li>具体原因就是昨晚更新好博客部署之后把 blog 整个文件夹都上传到 git 仓库了，当时认为不是同级文件夹不会有什么影响，就全部上传了</li>
+<li>今天在另一台电脑上把仓库克隆下来开始kuku修改博客样式，修改博客样式过程也挺艰辛的，耗时很久，最后也没有成功部署，我说那就上传git，等晚点再继续搞</li>
+<li>结局就是当我19:37拉取最新分支的时候，文件内容全是空的，白给，什么都不剩</li>
+<li>为什么不存到移动硬盘里，我存了上传git仓库的初版，这就意味着硬盘里的内容也不能用了</li>
+<li>好，我打开markdown开始重新搭博客，重新改样式</li>
+<li><img src="https://pic.imgdb.cn/item/65aa8e05871b83018abc7876.jpg">我一拳打爆这个世界 : (</li>
+</ul>
+</li>
+<li><p>即使过程很坎坷，但终归还是搭好了，也挺好的</p>
+</li>
+</ul>
+<h4 id="2-关于其他"><a href="#2-关于其他" class="headerlink" title="2 关于其他"></a>2 关于其他</h4><ul>
+<li>博客有的按钮还没做链接，等我有时间再完善</li>
+<li>后续应该会加一个评论功能，已经看了好几个评论插件了，目前比较偏向的是Gitalk，太晚了现在不想研究了</li>
+<li>到目前为止，博客的记录完全是靠撰写markdown，我不是很中意这种做法（我更想的是能直接在博客里撰写内容而后点击按钮发布，但这个肯定要等我自己后续手搓了，但是有一说一，现成的东西用起来真的很方便，开发者真的很伟大！）</li>
+<li>谁能想到我能在短时间里搭起博客，我没接触之前我一直认为这是一个全新的知识，光靠我这浅薄的认知估计没办法完成，但事实确实是我成功搭好了</li>
+<li>虽然很多方面还不够完善，但是这也是我前进的一小步了不是吗 : )</li>
+</ul>
+<p>——————————– 1.23 更新 ——————————–</p>
+<h4 id="3-关于评论功能"><a href="#3-关于评论功能" class="headerlink" title="3 关于评论功能"></a>3 关于评论功能</h4><ul>
+<li>使用的主题说明文档里面写了很多种评论插件的配置，尝试了几种，出现了需要外国手机号注册、实名认证、配置繁琐等问题，最终决定用Gitalk</li>
+<li>Gitalk有官方的配置文件，在butterfly主题里也不需要过多的配置</li>
+<li>Gitalk安装配置好后在主题的yml文件里填入对应的密钥就能实现了</li>
+<li>还是很简单的</li>
+<li>只是过程中出现了很多次Error:Not Find，我以为是配置不完善导致的，又去查找了很多方法，后来发现每个主题对于Gitalk的配置都不太一样，最后什么也没改（因为主题不一样没法改）</li>
+<li>什么也没动，过了一段时间再刷新打开博客，评论功能就能用了，很怪</li>
+<li>而且我目前发现了部署完之后立马打开博客，博客还是处于未更新的状态，有延迟，具体原因待寻找</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>git相关命令</title>
+    <url>/2024/01/22/git%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<blockquote>
+<p>最近在写工作小结，用git的提交记录作为数据支撑可以水不少字数（bushi），记录一下常用的git命令吧</p>
+</blockquote>
+<h4 id="1-创建仓库"><a href="#1-创建仓库" class="headerlink" title="1 创建仓库"></a>1 创建仓库</h4><ul>
+<li><p>git init </p>
+<p>— 初始化仓库</p>
+</li>
+<li><p>git clone </p>
+<p>— 克隆仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/xxx.git</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-提交与修改"><a href="#2-提交与修改" class="headerlink" title="2 提交与修改"></a>2 提交与修改</h4><ul>
+<li><p>git add </p>
+<p>— 添加文件到暂存区</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add . // 将当前目录下的所有文件添加到暂存区</span><br><span class="line">git add 指定文件 // 将当前目录下的指定文件添加到暂存区 git add README</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git commit </p>
+<p>— 将暂存区内容添加到仓库中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git commit -m &quot;提交信息&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git log </p>
+<p>— 查看历史提交记录</p>
+</li>
+<li><p>git remote </p>
+<p>— 管理远程仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote add 仓库名称 仓库地址 </span><br><span class="line">// 指定一个远程仓库的名称和url将其添加到当前仓库中 git remote add origin https://github.com/xxx.git</span><br><span class="line"></span><br><span class="line">git remote -v // 查看所有的远程仓库信息</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git pull </p>
+<p>— 拉取远程仓库代码合并</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git pull origin master // 从远程仓库master分支拉取代码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git push </p>
+<p>— 将本地文件推送至远程仓库合并</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push origin master // 将本地文件推送至远程仓库master分支</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="3-统计信息"><a href="#3-统计信息" class="headerlink" title="3 统计信息"></a>3 统计信息</h4><ul>
+<li><p>git log –author&#x3D;”用户名” –since&#x3D;”YYYY-MM-DD” –until&#x3D;”YYYY-MM-DD” –oneline | wc -l      </p>
+<p>— 统计指定用户在某个时间段的git提交次数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --author=&quot;ling&quot; --since=&quot;2024-01-01&quot; --until=&quot;2024-01-22&quot; --oneline | wc -l</span><br><span class="line"></span><br><span class="line">88 </span><br><span class="line">// 提交次数</span><br><span class="line"></span><br><span class="line">// 不指定时间则如下，统计的是当前分支上的所有提交次数</span><br><span class="line">git log --author=&quot;ling&quot; --oneline | wc -l</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git log –author&#x3D;”用户名” –since&#x3D;”YYYY-MM-DD” –until&#x3D;”YYYY-MM-DD” –pretty&#x3D;tformat: –numstat | awk ‘{ add +&#x3D; $1; subs +&#x3D; $2; loc +&#x3D; $1 - $2 } END { printf “added lines: %s, removed lines: %s, total lines: %s\n”, add, subs, loc }’ -       </p>
+<p>— 统计指定用户在某个时间段的git代码量</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --author=&quot;ling&quot; --since=&quot;2023-11-01&quot; --until=&quot;2023-11-30&quot; --pretty=tformat: --numstat | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27; -</span><br><span class="line"></span><br><span class="line">added lines: 9228, removed lines: 4234, total lines: 4994 </span><br><span class="line">// 新增行数9228，删除行数4234，总共有效行数4994</span><br><span class="line"></span><br><span class="line">// 不指定时间如下，统计的是当前分支上的所有代码量</span><br><span class="line">git log --author=&quot;ling&quot; --pretty=tformat: --numstat | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27; -</span><br><span class="line"></span><br><span class="line">// 只统计有效代码量</span><br><span class="line">git log --author=&quot;ling&quot; --since=2023-11-01 --until=2023-11-30 --pretty=tformat: --numstat | awk &#x27;&#123;loc+=($1-$2)&#125; END &#123;print loc&#125;&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue3项目搭建</title>
+    <url>/2024/01/27/vue3%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<blockquote>
+<p>近期决定要新搭建一个vue项目，边学边搭吧，技术这些东西真的常看常新</p>
+<p>这篇内容会断断续续的记录</p>
+</blockquote>
+<h4 id="1-初始化项目"><a href="#1-初始化项目" class="headerlink" title="1 初始化项目"></a>1 初始化项目</h4><ul>
+<li><p>在想要放置项目的磁盘位置打开cmd，输入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm create vue@latest</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>根据相关提示自行选择需要的配置项</p>
+</li>
+<li><p>而后根据命令提示依次输入命令，即可完成对项目的创建</p>
+</li>
+</ul>
+<h4 id="2-项目配置"><a href="#2-项目配置" class="headerlink" title="2 项目配置"></a>2 项目配置</h4><ul>
+<li><p>路径别名设置</p>
+<ul>
+<li><p>tsconfig.json中写入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    &quot;compilerOptions&quot;: &#123;</span><br><span class="line">        &quot;baseUrl&quot;: &quot;.&quot;,</span><br><span class="line">        &quot;paths&quot;: &#123;</span><br><span class="line">            &quot;@/*&quot;: [&quot;src/*&quot;]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">// 在此写入的别名配置只做输入时的联想提示，并不进行实际的路径转换</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>实际的路径转换在vite.config.ts中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">resolve: &#123;</span><br><span class="line">  alias: &#123;</span><br><span class="line">    &#x27;@&#x27;: fileURLToPath(new URL(&#x27;./src&#x27;, import.meta.url))</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>引入element plus组件库</p>
+<ul>
+<li><p>在项目的终端安装</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install element-plus --save</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>自动导入组件</p>
+<ul>
+<li><p>安装插件</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install -D unplugin-vue-components unplugin-auto-import</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在vite.config.ts中配置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import AutoImport from &#x27;unplugin-auto-import/vite&#x27;</span><br><span class="line">import Components from &#x27;unplugin-vue-components/vite&#x27;</span><br><span class="line">import &#123; ElementPlusResolver &#125; from &#x27;unplugin-vue-components/resolvers&#x27;</span><br><span class="line"></span><br><span class="line">export default defineConfig(&#123;</span><br><span class="line">  // ...</span><br><span class="line">  plugins: [</span><br><span class="line">    // ...</span><br><span class="line">    AutoImport(&#123;</span><br><span class="line">      resolvers: [ElementPlusResolver()],</span><br><span class="line">    &#125;),</span><br><span class="line">    Components(&#123;</span><br><span class="line">      resolvers: [ElementPlusResolver()],</span><br><span class="line">    &#125;),</span><br><span class="line">  ],</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>sass配置（颜色定制化, 覆盖element原始样式）</p>
+<ul>
+<li><p>安装sass</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install -D sass</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新建文件放置样式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">@forward &#x27;element-plus/theme-chalk/src/common/var.scss&#x27; with (</span><br><span class="line">  $colors: (</span><br><span class="line">    &#x27;primary&#x27;: (</span><br><span class="line">      &#x27;base&#x27;: rgb(88, 180, 88),</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>按需导入自定义主题</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">    Components(&#123;</span><br><span class="line">      // resolvers: [ElementPlusResolver()],</span><br><span class="line">      resolvers: [ElementPlusResolver(&#123;importStyle: &quot;sass&quot;&#125;)],</span><br><span class="line">    &#125;),</span><br><span class="line">    // vite.config.ts中替换配置</span><br><span class="line">    </span><br><span class="line">css: &#123;</span><br><span class="line">  preprocessorOptions: &#123;</span><br><span class="line">    scss: &#123;</span><br><span class="line">      additionalData: `@use &quot;@/assets/sass/index.scss&quot; as *;`,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;,</span><br><span class="line">// 新增</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>axios安装配置</p>
+<ul>
+<li><p>安装axio</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install axios</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>图标引入</p>
+<ul>
+<li><p>REMIX ICON下载</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm install remixicon --save</span><br><span class="line"></span><br><span class="line">// 阿里的图库需要登录、新建项目文件、将图标添加到文件中、设置图标引用类型，且在线使用（很麻烦，我不愿意，虽然图标很多）</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>在main.ts中引入</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import &#x27;remixicon/fonts/remixicon.css&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-相关问题"><a href="#3-相关问题" class="headerlink" title="3 相关问题"></a>3 相关问题</h4><ul>
+<li><p>设置顶部导航栏时，无法占满整个屏幕宽度</p>
+<ul>
+<li><p>设置全局样式</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">html,body,#app&#123;</span><br><span class="line">	margin: 0;</span><br><span class="line">	padding: 0;</span><br><span class="line">	height: 100%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+<li><p>用户代理样式表中margin: 8px，导致无法占满屏幕宽度</p>
+<ul>
+<li>App.vue文件中style不能设置scoped属性，且需要设置 lang&#x3D;”scss”</li>
+</ul>
+</li>
+<li><p>吸顶导航栏设置背景色后，在浏览器滚动过程中背景色是透明的，暂时还没解决</p>
+</li>
+</ul>
+]]></content>
+  </entry>
+</search>
