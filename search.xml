@@ -1,6 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>git相关命令</title>
+    <url>/2024/01/22/git%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<blockquote>
+<p>最近在写工作小结，用git的提交记录作为数据支撑可以水不少字数（bushi），记录一下常用的git命令吧</p>
+</blockquote>
+<h4 id="1-创建仓库"><a href="#1-创建仓库" class="headerlink" title="1 创建仓库"></a>1 创建仓库</h4><ul>
+<li><p>git init </p>
+<p>— 初始化仓库</p>
+</li>
+<li><p>git clone </p>
+<p>— 克隆仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/xxx.git</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="2-提交与修改"><a href="#2-提交与修改" class="headerlink" title="2 提交与修改"></a>2 提交与修改</h4><ul>
+<li><p>git add </p>
+<p>— 添加文件到暂存区</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add . // 将当前目录下的所有文件添加到暂存区</span><br><span class="line">git add 指定文件 // 将当前目录下的指定文件添加到暂存区 git add README</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git commit </p>
+<p>— 将暂存区内容添加到仓库中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git commit -m &quot;提交信息&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git log </p>
+<p>— 查看历史提交记录</p>
+</li>
+<li><p>git remote </p>
+<p>— 管理远程仓库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote add 仓库名称 仓库地址 </span><br><span class="line">// 指定一个远程仓库的名称和url将其添加到当前仓库中 git remote add origin https://github.com/xxx.git</span><br><span class="line"></span><br><span class="line">git remote -v // 查看所有的远程仓库信息</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git pull </p>
+<p>— 拉取远程仓库代码合并</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git pull origin master // 从远程仓库master分支拉取代码</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git push </p>
+<p>— 将本地文件推送至远程仓库合并</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push origin master // 将本地文件推送至远程仓库master分支</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h4 id="3-统计信息"><a href="#3-统计信息" class="headerlink" title="3 统计信息"></a>3 统计信息</h4><ul>
+<li><p>git log –author&#x3D;”用户名” –since&#x3D;”YYYY-MM-DD” –until&#x3D;”YYYY-MM-DD” –oneline | wc -l      </p>
+<p>— 统计指定用户在某个时间段的git提交次数</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --author=&quot;ling&quot; --since=&quot;2024-01-01&quot; --until=&quot;2024-01-22&quot; --oneline | wc -l</span><br><span class="line"></span><br><span class="line">88 </span><br><span class="line">// 提交次数</span><br><span class="line"></span><br><span class="line">// 不指定时间则如下，统计的是当前分支上的所有提交次数</span><br><span class="line">git log --author=&quot;ling&quot; --oneline | wc -l</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>git log –author&#x3D;”用户名” –since&#x3D;”YYYY-MM-DD” –until&#x3D;”YYYY-MM-DD” –pretty&#x3D;tformat: –numstat | awk ‘{ add +&#x3D; $1; subs +&#x3D; $2; loc +&#x3D; $1 - $2 } END { printf “added lines: %s, removed lines: %s, total lines: %s\n”, add, subs, loc }’ -       </p>
+<p>— 统计指定用户在某个时间段的git代码量</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --author=&quot;ling&quot; --since=&quot;2023-11-01&quot; --until=&quot;2023-11-30&quot; --pretty=tformat: --numstat | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27; -</span><br><span class="line"></span><br><span class="line">added lines: 9228, removed lines: 4234, total lines: 4994 </span><br><span class="line">// 新增行数9228，删除行数4234，总共有效行数4994</span><br><span class="line"></span><br><span class="line">// 不指定时间如下，统计的是当前分支上的所有代码量</span><br><span class="line">git log --author=&quot;ling&quot; --pretty=tformat: --numstat | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27; -</span><br><span class="line"></span><br><span class="line">// 只统计有效代码量</span><br><span class="line">git log --author=&quot;ling&quot; --since=2023-11-01 --until=2023-11-30 --pretty=tformat: --numstat | awk &#x27;&#123;loc+=($1-$2)&#125; END &#123;print loc&#125;&#x27;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>hexo搭建博客流程，及遇到的问题</title>
     <url>/2024/01/17/hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%B5%81%E7%A8%8B%EF%BC%8C%E5%8F%8A%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<h4 id="1-一些碎碎念"><a href="#1-一些碎碎念" class="headerlink" title="1 一些碎碎念"></a>1 一些碎碎念</h4><ul>
@@ -125,96 +177,6 @@
       </tags>
   </entry>
   <entry>
-    <title>搭建博客心得</title>
-    <url>/2024/01/19/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%BF%83%E5%BE%97(bushi)/</url>
-    <content><![CDATA[<h4 id="1-关于博客搭建"><a href="#1-关于博客搭建" class="headerlink" title="1 关于博客搭建"></a>1 关于博客搭建</h4><ul>
-<li><p>第一次搭建博客的耗时很短，搭好之后感觉挺有成就感的</p>
-</li>
-<li><p>但我也没想到我自己写的第一篇博客面向的第一个对象会是我自己</p>
-<ul>
-<li>具体原因就是昨晚更新好博客部署之后把 blog 整个文件夹都上传到 git 仓库了，当时认为不是同级文件夹不会有什么影响，就全部上传了</li>
-<li>今天在另一台电脑上把仓库克隆下来开始kuku修改博客样式，修改博客样式过程也挺艰辛的，耗时很久，最后也没有成功部署，我说那就上传git，等晚点再继续搞</li>
-<li>结局就是当我19:37拉取最新分支的时候，文件内容全是空的，白给，什么都不剩</li>
-<li>为什么不存到移动硬盘里，我存了上传git仓库的初版，这就意味着硬盘里的内容也不能用了</li>
-<li>好，我打开markdown开始重新搭博客，重新改样式</li>
-<li><img src="https://pic.imgdb.cn/item/65aa8e05871b83018abc7876.jpg">我一拳打爆这个世界 : (</li>
-</ul>
-</li>
-<li><p>即使过程很坎坷，但终归还是搭好了，也挺好的</p>
-</li>
-</ul>
-<h4 id="2-关于其他"><a href="#2-关于其他" class="headerlink" title="2 关于其他"></a>2 关于其他</h4><ul>
-<li>博客有的按钮还没做链接，等我有时间再完善</li>
-<li>后续应该会加一个评论功能，已经看了好几个评论插件了，目前比较偏向的是Gitalk，太晚了现在不想研究了</li>
-<li>到目前为止，博客的记录完全是靠撰写markdown，我不是很中意这种做法（我更想的是能直接在博客里撰写内容而后点击按钮发布，但这个肯定要等我自己后续手搓了，但是有一说一，现成的东西用起来真的很方便，开发者真的很伟大！）</li>
-<li>谁能想到我能在短时间里搭起博客，我没接触之前我一直认为这是一个全新的知识，光靠我这浅薄的认知估计没办法完成，但事实确实是我成功搭好了</li>
-<li>虽然很多方面还不够完善，但是这也是我前进的一小步了不是吗 : )</li>
-</ul>
-<p>——————————– 1.23 更新 ——————————–</p>
-<h4 id="3-关于评论功能"><a href="#3-关于评论功能" class="headerlink" title="3 关于评论功能"></a>3 关于评论功能</h4><ul>
-<li>使用的主题说明文档里面写了很多种评论插件的配置，尝试了几种，出现了需要外国手机号注册、实名认证、配置繁琐等问题，最终决定用Gitalk</li>
-<li>Gitalk有官方的配置文件，在butterfly主题里也不需要过多的配置</li>
-<li>Gitalk安装配置好后在主题的yml文件里填入对应的密钥就能实现了</li>
-<li>还是很简单的</li>
-<li>只是过程中出现了很多次Error:Not Find，我以为是配置不完善导致的，又去查找了很多方法，后来发现每个主题对于Gitalk的配置都不太一样，最后什么也没改（因为主题不一样没法改）</li>
-<li>什么也没动，过了一段时间再刷新打开博客，评论功能就能用了，很怪</li>
-<li>而且我目前发现了部署完之后立马打开博客，博客还是处于未更新的状态，有延迟，具体原因待寻找</li>
-</ul>
-]]></content>
-  </entry>
-  <entry>
-    <title>git相关命令</title>
-    <url>/2024/01/22/git%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<blockquote>
-<p>最近在写工作小结，用git的提交记录作为数据支撑可以水不少字数（bushi），记录一下常用的git命令吧</p>
-</blockquote>
-<h4 id="1-创建仓库"><a href="#1-创建仓库" class="headerlink" title="1 创建仓库"></a>1 创建仓库</h4><ul>
-<li><p>git init </p>
-<p>— 初始化仓库</p>
-</li>
-<li><p>git clone </p>
-<p>— 克隆仓库</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git clone https://github.com/xxx.git</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="2-提交与修改"><a href="#2-提交与修改" class="headerlink" title="2 提交与修改"></a>2 提交与修改</h4><ul>
-<li><p>git add </p>
-<p>— 添加文件到暂存区</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git add . // 将当前目录下的所有文件添加到暂存区</span><br><span class="line">git add 指定文件 // 将当前目录下的指定文件添加到暂存区 git add README</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>git commit </p>
-<p>— 将暂存区内容添加到仓库中</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git commit -m &quot;提交信息&quot;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>git log </p>
-<p>— 查看历史提交记录</p>
-</li>
-<li><p>git remote </p>
-<p>— 管理远程仓库</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git remote add 仓库名称 仓库地址 </span><br><span class="line">// 指定一个远程仓库的名称和url将其添加到当前仓库中 git remote add origin https://github.com/xxx.git</span><br><span class="line"></span><br><span class="line">git remote -v // 查看所有的远程仓库信息</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>git pull </p>
-<p>— 拉取远程仓库代码合并</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git pull origin master // 从远程仓库master分支拉取代码</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>git push </p>
-<p>— 将本地文件推送至远程仓库合并</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git push origin master // 将本地文件推送至远程仓库master分支</span><br></pre></td></tr></table></figure></li>
-</ul>
-<h4 id="3-统计信息"><a href="#3-统计信息" class="headerlink" title="3 统计信息"></a>3 统计信息</h4><ul>
-<li><p>git log –author&#x3D;”用户名” –since&#x3D;”YYYY-MM-DD” –until&#x3D;”YYYY-MM-DD” –oneline | wc -l      </p>
-<p>— 统计指定用户在某个时间段的git提交次数</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --author=&quot;ling&quot; --since=&quot;2024-01-01&quot; --until=&quot;2024-01-22&quot; --oneline | wc -l</span><br><span class="line"></span><br><span class="line">88 </span><br><span class="line">// 提交次数</span><br><span class="line"></span><br><span class="line">// 不指定时间则如下，统计的是当前分支上的所有提交次数</span><br><span class="line">git log --author=&quot;ling&quot; --oneline | wc -l</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>git log –author&#x3D;”用户名” –since&#x3D;”YYYY-MM-DD” –until&#x3D;”YYYY-MM-DD” –pretty&#x3D;tformat: –numstat | awk ‘{ add +&#x3D; $1; subs +&#x3D; $2; loc +&#x3D; $1 - $2 } END { printf “added lines: %s, removed lines: %s, total lines: %s\n”, add, subs, loc }’ -       </p>
-<p>— 统计指定用户在某个时间段的git代码量</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">git log --author=&quot;ling&quot; --since=&quot;2023-11-01&quot; --until=&quot;2023-11-30&quot; --pretty=tformat: --numstat | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27; -</span><br><span class="line"></span><br><span class="line">added lines: 9228, removed lines: 4234, total lines: 4994 </span><br><span class="line">// 新增行数9228，删除行数4234，总共有效行数4994</span><br><span class="line"></span><br><span class="line">// 不指定时间如下，统计的是当前分支上的所有代码量</span><br><span class="line">git log --author=&quot;ling&quot; --pretty=tformat: --numstat | awk &#x27;&#123; add += $1; subs += $2; loc += $1 - $2 &#125; END &#123; printf &quot;added lines: %s, removed lines: %s, total lines: %s\n&quot;, add, subs, loc &#125;&#x27; -</span><br><span class="line"></span><br><span class="line">// 只统计有效代码量</span><br><span class="line">git log --author=&quot;ling&quot; --since=2023-11-01 --until=2023-11-30 --pretty=tformat: --numstat | awk &#x27;&#123;loc+=($1-$2)&#125; END &#123;print loc&#125;&#x27;</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Vue3项目搭建</title>
     <url>/2024/01/27/vue3%E9%A1%B9%E7%9B%AE%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<blockquote>
@@ -300,7 +262,68 @@
 </ul>
 </li>
 <li><p>吸顶导航栏设置背景色后，在浏览器滚动过程中背景色是透明的，暂时还没解决</p>
+<ul>
+<li>出现这个问题的原因可能是由于吸顶导航栏的样式设置与其他部分组件样式冲突，其他组件样式优先级似乎高于吸顶导航栏</li>
+<li>若是主要内容区域样式有设置 opacity，则在滚动浏览器过程中，吸顶导航栏会始终保持透明</li>
+</ul>
 </li>
+</ul>
+<h4 id="4-一些方法记录"><a href="#4-一些方法记录" class="headerlink" title="4 一些方法记录"></a>4 一些方法记录</h4><ul>
+<li><p>轮播图</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 轮播图自动播放的本质是，开启定时器 setInterval</span></span><br><span class="line"><span class="comment">// setInterval 返回一个唯一标识，通过调用 clearInterval 可移除定时器</span></span><br><span class="line"><span class="keyword">let</span> carousel = <span class="built_in">setInterval</span>(<span class="function">()=&gt;</span>&#123;</span><br><span class="line">    currentIndex.<span class="property">value</span>++</span><br><span class="line">    <span class="keyword">if</span>(currentIndex.<span class="property">value</span> &gt;= <span class="title class_">Data</span>.<span class="property">length</span>)&#123;</span><br><span class="line">        currentIndex.<span class="property">value</span> = <span class="number">0</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;,<span class="number">1000</span>)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>另，setInterval 和 setTimeout 的区别</p>
+<ul>
+<li><p>setInterval 在指定的时间间隔重复执行某段代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = <span class="number">0</span>;  </span><br><span class="line"><span class="built_in">setInterval</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;  </span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(counter);  </span><br><span class="line">    counter++;  </span><br><span class="line">&#125;, <span class="number">1000</span>); <span class="comment">// 每秒打印一次计数器的值，并递增计数器</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>setTimeout 仅在指定的时间后执行一次代码</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">setTimeout</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;  </span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&quot;Hello, world!&quot;</span>);  </span><br><span class="line">&#125;, <span class="number">1000</span>); <span class="comment">// 在1秒后打印出 &quot;Hello, world!&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>el-table 表头背景色设置</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;el-table :header-cell-style=&quot;&#123; background: blue; color: #fff&#125;&quot;&gt;</span><br><span class="line">	.........</span><br><span class="line">&lt;/el-table&gt;</span><br><span class="line">// background为表头背景色，color为表头字体颜色</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>搭建博客心得</title>
+    <url>/2024/01/19/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%BF%83%E5%BE%97(bushi)/</url>
+    <content><![CDATA[<h4 id="1-关于博客搭建"><a href="#1-关于博客搭建" class="headerlink" title="1 关于博客搭建"></a>1 关于博客搭建</h4><ul>
+<li><p>第一次搭建博客的耗时很短，搭好之后感觉挺有成就感的</p>
+</li>
+<li><p>但我也没想到我自己写的第一篇博客面向的第一个对象会是我自己</p>
+<ul>
+<li>具体原因就是昨晚更新好博客部署之后把 blog 整个文件夹都上传到 git 仓库了，当时认为不是同级文件夹不会有什么影响，就全部上传了</li>
+<li>今天在另一台电脑上把仓库克隆下来开始kuku修改博客样式，修改博客样式过程也挺艰辛的，耗时很久，最后也没有成功部署，我说那就上传git，等晚点再继续搞</li>
+<li>结局就是当我19:37拉取最新分支的时候，文件内容全是空的，白给，什么都不剩</li>
+<li>为什么不存到移动硬盘里，我存了上传git仓库的初版，这就意味着硬盘里的内容也不能用了</li>
+<li>好，我打开markdown开始重新搭博客，重新改样式</li>
+<li><img src="https://pic.imgdb.cn/item/65aa8e05871b83018abc7876.jpg">我一拳打爆这个世界 : (</li>
+</ul>
+</li>
+<li><p>即使过程很坎坷，但终归还是搭好了，也挺好的</p>
+</li>
+</ul>
+<h4 id="2-关于其他"><a href="#2-关于其他" class="headerlink" title="2 关于其他"></a>2 关于其他</h4><ul>
+<li>博客有的按钮还没做链接，等我有时间再完善</li>
+<li>后续应该会加一个评论功能，已经看了好几个评论插件了，目前比较偏向的是Gitalk，太晚了现在不想研究了</li>
+<li>到目前为止，博客的记录完全是靠撰写markdown，我不是很中意这种做法（我更想的是能直接在博客里撰写内容而后点击按钮发布，但这个肯定要等我自己后续手搓了，但是有一说一，现成的东西用起来真的很方便，开发者真的很伟大！）</li>
+<li>谁能想到我能在短时间里搭起博客，我没接触之前我一直认为这是一个全新的知识，光靠我这浅薄的认知估计没办法完成，但事实确实是我成功搭好了</li>
+<li>虽然很多方面还不够完善，但是这也是我前进的一小步了不是吗 : )</li>
+</ul>
+<p>——————————– 1.23 更新 ——————————–</p>
+<h4 id="3-关于评论功能"><a href="#3-关于评论功能" class="headerlink" title="3 关于评论功能"></a>3 关于评论功能</h4><ul>
+<li>使用的主题说明文档里面写了很多种评论插件的配置，尝试了几种，出现了需要外国手机号注册、实名认证、配置繁琐等问题，最终决定用Gitalk</li>
+<li>Gitalk有官方的配置文件，在butterfly主题里也不需要过多的配置</li>
+<li>Gitalk安装配置好后在主题的yml文件里填入对应的密钥就能实现了</li>
+<li>还是很简单的</li>
+<li>只是过程中出现了很多次Error:Not Find，我以为是配置不完善导致的，又去查找了很多方法，后来发现每个主题对于Gitalk的配置都不太一样，最后什么也没改（因为主题不一样没法改）</li>
+<li>什么也没动，过了一段时间再刷新打开博客，评论功能就能用了，很怪</li>
+<li>而且我目前发现了部署完之后立马打开博客，博客还是处于未更新的状态，有延迟，具体原因待寻找</li>
 </ul>
 ]]></content>
   </entry>
